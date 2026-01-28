@@ -138,6 +138,40 @@ References:
 
 ---
 
+## 🛠️ Makefile Commands
+
+The Makefile provides shortcuts for generating models and migrations. Always include `--` before flags so Make doesn’t treat them as its own options.
+
+### Create a model (optionally with migration)
+
+```bash
+make model -- --name User
+make model -- --name User --migration
+```
+
+This creates `App/Models/User.php` and (when `--migration` is used) a migration in `Database/Migrations` with a basic template that sets:
+
+```
+$table = $this->table("users");
+```
+
+### Create a custom migration for a model
+
+```bash
+make migration -- --model User --name addEmailColumn
+```
+
+This creates a migration named like `YYYYMMDDHHMMSS_add_email_column_to_user.php` and pre-fills the table based on the model name.
+
+### Overwrite existing files
+
+```bash
+make model -- --name User --migration --force
+make migration -- --model User --name addEmailColumn --force
+```
+
+---
+
 ## 🧪 Tests & Development
 
 This repository does not include a test suite by default. For local debugging, use the PHP built-in server and add unit/integration tests as needed.
