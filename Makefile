@@ -1,5 +1,6 @@
 APP_MODELS_DIR := App/Models
 PHINX_BIN := vendor/bin/phinx
+ENV ?= development
 
 MODEL_NAME := $(shell echo "$(MAKECMDGOALS)" | awk '{for(i=1;i<=NF;i++){if($$i=="--name"){print $$(i+1); exit}}}')
 WITH_MIGRATION := $(filter --migration,$(MAKECMDGOALS))
@@ -85,3 +86,7 @@ migration:
 	if [ -n "$$migration_file" ]; then \
 		printf "%s\n" "<?php" "" "declare(strict_types=1);" "" "use Phinx\\Migration\\AbstractMigration;" "" "final class Add$${name_camel}To$${model} extends AbstractMigration" "{" "    public function change(): void" "    {" '        $$table = $$this->table("'"$$table_name"'");' "    }" "}" > "$$migration_file"; \
 	fi
+
+.PHONY: migrate
+migrate:
+	@$(PHINX_BIN) migrate -e $(ENV)

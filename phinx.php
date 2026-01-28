@@ -1,5 +1,5 @@
 <?php
-require_once "./Config/database.php";
+require_once __DIR__ . "/Config/database.php";
 
 return
 [
@@ -7,6 +7,6 @@ return
         'migrations' => '%%PHINX_CONFIG_DIR%%/Database/Migrations',
         'seeds' => '%%PHINX_CONFIG_DIR%%/Database/db/seeds'
     ],
-    'environments' => [$db_config],
+    'environments' => $db_config['environments'],
     'version_order' => 'creation'
 ];
