@@ -1,19 +1,30 @@
 <?php
 require_once "./Config/app.php";
 
+function env_value($key, $default = null) {
+    if (array_key_exists($key, $_ENV)) {
+        return $_ENV[$key];
+    }
+    $value = getenv($key);
+    if ($value !== false) {
+        return $value;
+    }
+    return $default;
+}
+
 // Check configuration options: https://book.cakephp.org/phinx/0/en/contents.html
 $db_config = [
     'environments' => [
         'default_migration_table' => 'phinxlog',
         'default_environment' => APP_ENV,
         'production' => [
-            'adapter' => 'pgsql',
-            'host' => $_ENV["DB_HOST"],
-            'name' => $_ENV["DB_NAME"],
-            'user' => $_ENV["DB_USER"],
-            'pass' => $_ENV["DB_PASS"],
-            'port' => $_ENV['DB_PORT'],
-            'charset' => 'utf8',
+            'adapter' => env_value('DB_ADAPTER', 'pgsql'),
+            'host' => env_value('DB_HOST', 'localhost'),
+            'name' => env_value('DB_NAME', ''),
+            'user' => env_value('DB_USER', ''),
+            'pass' => env_value('DB_PASS', ''),
+            'port' => env_value('DB_PORT', null),
+            'charset' => env_value('DB_CHARSET', 'utf8'),
         ],
         'development' => [
             'adapter' => 'mysql',

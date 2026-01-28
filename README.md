@@ -94,7 +94,7 @@ Edit `Config/app.php` and `Config/database.php` to adjust environment settings a
 
 ## 🗄️ Database Configuration
 
-Database settings live in `Config/database.php` and are read from environment variables:
+Database settings live in `Config/database.php` and are read from environment variables (with defaults/fallbacks):
 
 - `DB_HOST`
 - `DB_NAME`
@@ -103,6 +103,8 @@ Database settings live in `Config/database.php` and are read from environment va
 - `DB_PORT` (defaults to `5432` if not set)
 
 The default adapter in the production environment is PostgreSQL (`pgsql`). Development and testing defaults are MySQL in the current config. Adjust the adapter and credentials per environment as needed.
+
+At runtime, the core `Database` class is configured during bootstrap using the selected `APP_ENV` section from `Config/database.php`, and it falls back to `$_ENV` / `getenv()` if values are missing.
 
 ---
 
