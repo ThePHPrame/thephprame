@@ -28,17 +28,6 @@
 
 ```docker compose up --build -d```
 
-## 📦 Packages
-
-This repository is the application shell plus local Composer packages:
-
-- `local-packages/thephprame-core` — framework core (controllers, helpers, exceptions, etc.)
-- `local-packages/thephprame-router` — request/response objects and routing engine
-
-These packages are wired via `composer.json` and loaded through Composer autoloading.
-
----
-
 ## 📁 Project Layout (important files)
 
 - `Public/index.php` — front controller
@@ -100,6 +89,52 @@ Middleware classes live in `App/Middleware/` (e.g., `WebAuthentication`, `ApiAut
 ## 💾 Configuration
 
 Edit `Config/app.php` and `Config/database.php` to adjust environment settings and database connection details. If your project uses `.env` values, set them in your environment or a `.env` file.
+
+---
+
+## 🗄️ Database Configuration
+
+Database settings live in `Config/database.php` and are read from environment variables:
+
+- `DB_HOST`
+- `DB_NAME`
+- `DB_USER`
+- `DB_PASS`
+- `DB_PORT` (defaults to `5432` if not set)
+
+The default adapter in the production environment is PostgreSQL (`pgsql`). Development and testing defaults are MySQL in the current config. Adjust the adapter and credentials per environment as needed.
+
+---
+
+## 🧬 Migrations (Phinx)
+
+This project uses **Phinx** for database migrations.
+
+Configuration lives in `phinx.php` (PHP config). It loads the database config from `Config/database.php` and sets:
+
+- migrations path: `Database/Migrations`
+- seeds path: `Database/db/seeds`
+
+### Create a migration
+
+```bash
+vendor/bin/phinx create CreateUsersTable
+```
+
+This creates a new migration file with a timestamped filename inside `Database/Migrations`.
+
+### Run migrations
+
+```bash
+vendor/bin/phinx migrate -e production
+```
+
+Use the `-e` flag to target the configured environment (e.g. `production`, `development`, `testing`).
+
+References:
+
+- Phinx migrations: https://book.cakephp.org/phinx/0/en/migrations.html#creating-a-new-migration
+- Phinx commands: https://book.cakephp.org/phinx/0/en/commands.html
 
 ---
 
